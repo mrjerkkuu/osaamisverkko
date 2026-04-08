@@ -35,7 +35,11 @@ CREATE (:Skill {name: "JavaScript", category: "Frontend"}),
        (:Skill {name: "Kubernetes", category: "DevOps"}),
        (:Skill {name: "Python", category: "Data Science"}),
        (:Skill {name: "AWS", category: "Cloud"}),
-       (:Skill {name: "Figma", category: "Design"});
+       (:Skill {name: "Figma", category: "Design"}),
+       (:Skill {name: "Scrum", category: "Management"}),
+       (:Skill {name: "Machine Learning", category: "Data Science"}),
+       (:Skill {name: "Node.js", category: "Backend"}),
+       (:Skill {name: "Product Roadmap", category: "Management"});
 ```
 
 ### 4. Luo Kurssit
@@ -77,6 +81,18 @@ MATCH (p:Person {name: "Jeremia"}), (s:Skill {name: "AWS"}) CREATE (p)-[:HAS_SKI
 // Elena ja Design
 MATCH (p:Person {name: "Elena"}), (s:Skill {name: "Figma"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s);
 MATCH (p:Person {name: "Elena"}), (s:Skill {name: "JavaScript"}) CREATE (p)-[:HAS_SKILL {level: "Beginner"}]->(s);
+// Liisa (Product Owner)
+MATCH (p:Person {name: "Liisa"}), (s1:Skill {name: "Scrum"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s1);
+MATCH (p:Person {name: "Liisa"}), (s2:Skill {name: "Product Roadmap"}) CREATE (p)-[:HAS_SKILL {level: "Advanced"}]->(s2);
+
+// Antti (Data Scientist)
+MATCH (p:Person {name: "Antti"}), (s1:Skill {name: "Python"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s1);
+MATCH (p:Person {name: "Antti"}), (s2:Skill {name: "Machine Learning"}) CREATE (p)-[:HAS_SKILL {level: "Advanced"}]->(s2);
+
+// Kalle (Fullstack Dev)
+MATCH (p:Person {name: "Kalle"}), (s1:Skill {name: "Node.js"}) CREATE (p)-[:HAS_SKILL {level: "Advanced"}]->(s1);
+MATCH (p:Person {name: "Kalle"}), (s2:Skill {name: "React"}) CREATE (p)-[:HAS_SKILL {level: "Intermediate"}]->(s2);
+MATCH (p:Person {name: "Kalle"}), (s3:Skill {name: "MongoDB"}) CREATE (p)-[:HAS_SKILL {level: "Advanced"}]->(s3);
 ```
 
 ### 7. Kurssien tavoitteet (Mitä ne opettavat)
