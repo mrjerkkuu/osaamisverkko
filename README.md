@@ -29,41 +29,25 @@ Graafitietokanta valittiin tähän tehtävään, koska se on ylivertainen perint
 
 ---
 
-## 💾 Tietokannan alustus (Demo-data)
+## 📖 Ohjeet ja testimateriaali
 
-Koska tietokanta käynnistyy tyhjänä, suorita demo-datan lisäys erillisen ohjeen mukaan:
-👉 [SETUP_DATA.md](./SETUP_DATA.md)
+Projekti on jaettu kolmeen osaan hallinnan helpottamiseksi:
 
----
+1. **[Tietokannan alustus (SETUP_DATA.md)](./SETUP_DATA.md)**
+   - Sisältää valmiit Cypher-komennot laajan testimateriaalin (henkilöt, tiimit, taidot, kurssit) luomiseen. **Aja nämä ensin Neo4j Browserissa.**
 
-## 📊 Esimerkkikyselyt (Cypher)
-
-Voit ajaa näitä Neo4j Browserissa (portti 7474) testataksesi kannan toimintaa:
-
-**1. Hae kaikki henkilöt, jotka osaavat "Docker" -taidon:**
-
-```cypher
-MATCH (p:Person)-[:HAS_SKILL]->(s:Skill {name: "Docker"})
-RETURN p.name
-```
-
-**2. Suosittele kursseja: Mitkä kurssit opettavat taitoja, joita "Matti" ei vielä osaa?**
-
-```cypher
-MATCH (m:Person {name: "Matti"})
-MATCH (c:Course)-[:TEACHES]->(s:Skill)
-WHERE NOT (m)-[:HAS_SKILL]->(s)
-RETURN c.title, s.name
-```
+2. **[Demokyselyt ja skenaariot (DEMO_QUERIES.md)](./DEMO_QUERIES.md)**
+   - Sisältää valmiita hakuja, joilla voit esitellä graafin voimaa (esim. mentorin etsiminen tai älykäs kurssisuosittelu).
 
 ---
 
 ## 📂 Projektin rakenne
 
-- `public/` - HTML/JS käyttöliittymä.
-- `server.js` - Node.js-backend ja Neo4j-ajuri.
-- `docker-compose.yml` - Konttien määrittely.
-- `SETUP_DATA.md` - Valmis testimateriaali.
+- `public/` - Selaimessa näkyvä käyttöliittymä.
+- `server.js` - Node.js-backend, joka puhuu Neo4j-tietokannan kanssa.
+- `docker-compose.yml` - Konttien (Node & Neo4j) määrittelyt.
+- `Dockerfile` - Ohjeet Node-sovelluksen rakentamiseen.
+- `package.json` - Projektin riippuvuudet (`express`, `neo4j-driver`).
 
 ---
 
