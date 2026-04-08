@@ -16,9 +16,9 @@ Graafitietokanta valittiin tähän tehtävään, koska se on ylivertainen perint
 1. **Kloonaa ja käynnistä:**
 
    ```bash
-   git clone https://github.com/KAYTTAJANIMI/skillgraph.git
+   git clone https://github.com/mrjerkkuu/osaamisverkko
    cd skillgraph
-   docker-compose up --build
+   docker compose up -d
    ```
 
 2. **Käyttöliittymät:**
