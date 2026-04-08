@@ -20,6 +20,11 @@ Graafitietokanta valittiin tähän tehtävään, koska se on ylivertainen perint
    cd osaamisverkko
    docker compose up -d
    ```
+   > **💡 Huom:** Jos sivu näyttää tyhjältä tai muutokset eivät näy, aja komento uudelleen `--build` -lipun kanssa. Tämä pakottaa Dockerin rakentamaan imagen uudelleen ja päivittämään tiedostot kontin sisällä:
+   > ```bash
+   > docker compose up --build -d
+   > ```
+
 
 2. **Käyttöliittymät:**
    - **Frontend:** [http://localhost:3002](http://localhost:3002) (Yksinkertainen haku)
