@@ -1,0 +1,25 @@
+{
+  "name": "skillgraph",
+  "version": "1.0.0",
+  "description": "Neo4j osaamisverkko",
+  "homepage": "https://github.com/mrjerkkuu/osaamisverkko#readme",
+  "bugs": {
+    "url": "https://github.com/mrjerkkuu/osaamisverkko/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrjerkkuu/osaamisverkko.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "neo4j-driver": "^5.12.0"
+  }
+}

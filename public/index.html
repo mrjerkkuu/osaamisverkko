@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SkillGraph Search</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        text-align: center;
+      }
+      input {
+        padding: 10px;
+        width: 200px;
+      }
+      button {
+        padding: 10px;
+      }
+      #results {
+        margin-top: 20px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🕸️ SkillGraph Haku</h1>
+    <p>Hae henkilön osaamiset (esim. Matti, Tiina, Jeremia)</p>
+    <input type="text" id="nameInput" placeholder="Henkilön nimi..." />
+    <button onclick="searchSkills()">Hae taidot</button>
+    <div id="results"></div>
+
+    <script>
+      async function searchSkills() {
+        const name = document.getElementById('nameInput').value;
+        const res = await fetch(`/skills/${name}`);
+        const skills = await res.json();
+        const div = document.getElementById('results');
+
+        if (skills.length > 0) {
+          div.innerHTML = `<h3>${name} osaa:</h3><ul>${skills.map((s) => `<li>${s}</li>`).join('')}</ul>`;
+        } else {
+          div.innerHTML = `<p>Ei taitoja löytynyt tai henkilöä ei ole kannassa.</p>`;
+        }
+      }
+    </script>
+  </body>
+</html>

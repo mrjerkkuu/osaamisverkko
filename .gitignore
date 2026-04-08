@@ -1,0 +1,16 @@
+# Riippuvuudet (nämä asennetaan kontin sisällä)
+node_modules/
+npm-debug.log*
+
+# Docker-tietokantadata (tämä kansio syntyy, kun ajat kontin)
+data/
+
+# Ympäristömuuttujat (jos lisäät myöhemmin .env-tiedoston)
+.env
+
+# Käyttöjärjestelmän omat tiedostot
+.DS_Store
+Thumbs.db
+
+# VS Code -asetukset
+.vscode/
