@@ -17,7 +17,7 @@ Graafitietokanta valittiin tähän tehtävään, koska se on ylivertainen perint
 
    ```bash
    git clone https://github.com/mrjerkkuu/osaamisverkko
-   cd skillgraph
+   cd osaamisverkko
    docker compose up -d
    ```
 
