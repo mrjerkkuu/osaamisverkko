@@ -104,3 +104,9 @@ MATCH (c:Course {title: "UI Design Fundamentals"}), (s:Skill {name: "Figma"}) CR
 MATCH (c:Course {title: "NoSQL Masterclass"}), (s:Skill {name: "Neo4j"}) CREATE (c)-[:TEACHES]->(s);
 MATCH (c:Course {title: "NoSQL Masterclass"}), (s:Skill {name: "MongoDB"}) CREATE (c)-[:TEACHES]->(s);
 ```
+
+### 8. Visualisoi koko verkosto
+
+```cypher
+MATCH (n) RETURN n;
+```
