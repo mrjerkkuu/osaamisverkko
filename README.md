@@ -69,4 +69,4 @@ RETURN c.title, s.name
 
 ## 📝 Tekijä
 
-© 2026 SkillGraph - [LISÄÄ NIMESI TÄHÄN]
+© 2026 Osaamisverkko - Jeremia

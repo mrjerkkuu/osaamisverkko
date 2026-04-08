@@ -5,44 +5,122 @@
     <title>SkillGraph Search</title>
     <style>
       body {
-        font-family: sans-serif;
-        max-width: 600px;
+        font-family: 'Segoe UI', sans-serif;
+        max-width: 800px;
         margin: 50px auto;
         text-align: center;
+        background-color: #f4f7f6;
+      }
+      .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
       input {
-        padding: 10px;
-        width: 200px;
+        padding: 12px;
+        width: 250px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
       }
       button {
-        padding: 10px;
+        padding: 12px 20px;
+        background: #008cc1;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
       }
+      button:hover {
+        background: #005f81;
+      }
+
+      #people-list {
+        margin: 20px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      .person-chip {
+        background: #e1f5fe;
+        border: 1px solid #b3e5fc;
+        padding: 5px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .person-chip:hover {
+        background: #b3e5fc;
+        transform: translateY(-2px);
+      }
+
       #results {
-        margin-top: 20px;
+        margin-top: 30px;
         text-align: left;
+        padding: 20px;
+        border-top: 1px solid #eee;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        margin: 5px 0;
+        padding: 10px;
+        border-left: 4px solid #008cc1;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
     </style>
   </head>
   <body>
-    <h1>🕸️ SkillGraph Haku</h1>
-    <p>Hae henkilön osaamiset (esim. Matti, Tiina, Jeremia)</p>
-    <input type="text" id="nameInput" placeholder="Henkilön nimi..." />
-    <button onclick="searchSkills()">Hae taidot</button>
-    <div id="results"></div>
+    <div class="container">
+      <h1>🕸️ SkillGraph Haku</h1>
+
+      <p><strong>Valitse henkilö tai kirjoita nimi:</strong></p>
+      <div id="people-list">Ladataan henkilöitä...</div>
+
+      <input type="text" id="nameInput" placeholder="Etsi nimellä..." />
+      <button
+        onclick="searchSkills(document.getElementById('nameInput').value)"
+      >
+        Hae taidot
+      </button>
+
+      <div id="results"></div>
+    </div>
 
     <script>
-      async function searchSkills() {
-        const name = document.getElementById('nameInput').value;
+      // Haetaan lista heti kun sivu latautuu
+      async function loadPeople() {
+        const res = await fetch('/people');
+        const people = await res.json();
+        const listDiv = document.getElementById('people-list');
+        listDiv.innerHTML = people
+          .map(
+            (name) =>
+              `<span class="person-chip" onclick="searchSkills('${name}')">${name}</span>`,
+          )
+          .join('');
+      }
+
+      async function searchSkills(name) {
+        if (!name) return;
         const res = await fetch(`/skills/${name}`);
         const skills = await res.json();
         const div = document.getElementById('results');
 
         if (skills.length > 0) {
-          div.innerHTML = `<h3>${name} osaa:</h3><ul>${skills.map((s) => `<li>${s}</li>`).join('')}</ul>`;
+          div.innerHTML = `<h3>Osaaja: ${name}</h3><p>Hän hallitsee seuraavat taidot:</p><ul>${skills.map((s) => `<li>${s}</li>`).join('')}</ul>`;
         } else {
-          div.innerHTML = `<p>Ei taitoja löytynyt tai henkilöä ei ole kannassa.</p>`;
+          div.innerHTML = `<p>Henkilöllä <strong>${name}</strong> ei ole vielä rekisteröityjä taitoja.</p>`;
         }
+        // Päivitetään myös input-kenttä vastaamaan klikattua nimeä
+        document.getElementById('nameInput').value = name;
       }
+
+      loadPeople();
     </script>
   </body>
 </html>

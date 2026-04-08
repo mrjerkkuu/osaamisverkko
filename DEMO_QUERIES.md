@@ -53,12 +53,14 @@ ORDER BY Osaajien_Maara DESC
 
 ---
 
-### 💡 Vinkkejä loistavaan demoon:
+### 5. Skenaario: Taidon omistavan kaverin etsiminen
 
-1. **Visuaalisuus:** Vaihda Neo4j Browserissa "Table"-näkymän ja "Graph"-näkymän välillä (ikonit tulosruudun vasemmassa laidassa). Graafitulos näyttää upealta isolla ruudulla!
-2. **Interaktiivisuus:** Kun graafi on näkyvissä, voit raahata pallon (solmun) hiirellä toiseen paikkaan – tämä osoittaa, että kyseessä on dynaaminen verkosto.
-3. **Syvyys:** Voit kokeilla myös "kaikki solmut" -näkyvää kyselyllä `MATCH (n) RETURN n` näyttääksesi koko SkillGraphin kerralla.
+**Tilanne:** Tarvitset apua johonkin tiettyyn taitoon
+
+```cypher
+MATCH (me:Person {name: "Matti"})-[:MEMBER_OF]->(t:Team)<-[:MEMBER_OF]-(teammate:Person)
+MATCH (teammate)-[r:HAS_SKILL]->(s:Skill {name: "Figma"})
+RETURN teammate.name AS Mentor, r.level AS Taso
+```
 
 ---
-
-© 2026 SkillGraph - Demo-ohjeet

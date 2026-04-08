@@ -1,60 +1,90 @@
-# 💾 SkillGraph - Testimateriaali
+# 💾 SkillGraph - Laajennettu Testimateriaali
 
-Kopioi ja aja nämä komennot Neo4j Browserissa (portti 7474) alustaaksesi tietokanta demottamista varten.
+Kopioi ja aja nämä Neo4j Browserissa (portti 7474) luodaksesi syvemmän osaamisverkoston.
 
-### 1. Tyhjennä kanta (varmuuden vuoksi)
+### 1. Tyhjennä vanha kanta
 
 ```cypher
 MATCH (n) DETACH DELETE n;
 ```
 
-### 2. Luo henkilöt
+### 2. Luo Henkilöt ja Tiimit
 
 ```cypher
+CREATE (t1:Team {name: "Cloud Rangers"}),
+       (t2:Team {name: "UI Wizards"}),
+       (t3:Team {name: "Data Squad"});
+
 CREATE (:Person {name: "Matti", role: "Junior Developer"}),
        (:Person {name: "Tiina", role: "Senior Architect"}),
        (:Person {name: "Jeremia", role: "DevOps Engineer"}),
-       (:Person {name: "Liisa", role: "Product Owner"});
+       (:Person {name: "Liisa", role: "Product Owner"}),
+       (:Person {name: "Antti", role: "Data Scientist"}),
+       (:Person {name: "Elena", role: "UX Designer"}),
+       (:Person {name: "Kalle", role: "Fullstack Dev"});
 ```
 
-### 3. Luo taidot
+### 3. Luo Osaamisalueet ja Taidot
 
 ```cypher
 CREATE (:Skill {name: "JavaScript", category: "Frontend"}),
+       (:Skill {name: "React", category: "Frontend"}),
        (:Skill {name: "Neo4j", category: "Database"}),
+       (:Skill {name: "MongoDB", category: "Database"}),
        (:Skill {name: "Docker", category: "DevOps"}),
+       (:Skill {name: "Kubernetes", category: "DevOps"}),
        (:Skill {name: "Python", category: "Data Science"}),
-       (:Skill {name: "React", category: "Frontend"});
+       (:Skill {name: "AWS", category: "Cloud"}),
+       (:Skill {name: "Figma", category: "Design"});
 ```
 
-### 4. Luo kurssit
+### 4. Luo Kurssit
 
 ```cypher
-CREATE (:Course {title: "NoSQL Masterclass", duration: "10h"}),
-       (:Course {title: "Docker Perusteet", duration: "5h"}),
-       (:Course {title: "Frontend Bootcamp", duration: "20h"});
+CREATE (:Course {title: "NoSQL Masterclass", level: "Advanced"}),
+       (:Course {title: "Docker Perusteet", level: "Beginner"}),
+       (:Course {title: "Cloud Native Architecture", level: "Expert"}),
+       (:Course {title: "UI Design Fundamentals", level: "Intermediate"}),
+       (:Course {title: "Python for Data", level: "Intermediate"});
 ```
 
-### 5. Luo suhteet (Kuka osaa mitäkin)
+### 5. Yhdistä Henkilöt Tiimeihin
 
 ```cypher
-MATCH (m:Person {name: "Matti"}), (js:Skill {name: "JavaScript"}) CREATE (m)-[:HAS_SKILL {level: "Intermediate"}]->(js);
-MATCH (t:Person {name: "Tiina"}), (neo:Skill {name: "Neo4j"}) CREATE (t)-[:HAS_SKILL {level: "Expert"}]->(neo);
-MATCH (t:Person {name: "Tiina"}), (doc:Skill {name: "Docker"}) CREATE (t)-[:HAS_SKILL {level: "Advanced"}]->(doc);
-MATCH (j:Person {name: "Jeremia"}), (doc:Skill {name: "Docker"}) CREATE (j)-[:HAS_SKILL {level: "Expert"}]->(doc);
+MATCH (p:Person {name: "Jeremia"}), (t:Team {name: "Cloud Rangers"}) CREATE (p)-[:MEMBER_OF]->(t);
+MATCH (p:Person {name: "Tiina"}), (t:Team {name: "Cloud Rangers"}) CREATE (p)-[:MEMBER_OF]->(t);
+MATCH (p:Person {name: "Matti"}), (t:Team {name: "UI Wizards"}) CREATE (p)-[:MEMBER_OF]->(t);
+MATCH (p:Person {name: "Elena"}), (t:Team {name: "UI Wizards"}) CREATE (p)-[:MEMBER_OF]->(t);
+MATCH (p:Person {name: "Antti"}), (t:Team {name: "Data Squad"}) CREATE (p)-[:MEMBER_OF]->(t);
 ```
 
-### 6. Luo suhteet (Mitä kurssit opettavat)
+### 6. Luo ristiinmenevät Osaamis-suhteet
 
 ```cypher
+// Matti opettelee
+MATCH (p:Person {name: "Matti"}), (s:Skill {name: "JavaScript"}) CREATE (p)-[:HAS_SKILL {level: "Intermediate"}]->(s);
+
+// Tiina osaa melkein kaiken pilvessä
+MATCH (p:Person {name: "Tiina"}), (s:Skill {name: "AWS"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s);
+MATCH (p:Person {name: "Tiina"}), (s:Skill {name: "Neo4j"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s);
+MATCH (p:Person {name: "Tiina"}), (s:Skill {name: "Kubernetes"}) CREATE (p)-[:HAS_SKILL {level: "Advanced"}]->(s);
+
+// Jeremia ja DevOps
+MATCH (p:Person {name: "Jeremia"}), (s:Skill {name: "Docker"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s);
+MATCH (p:Person {name: "Jeremia"}), (s:Skill {name: "Kubernetes"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s);
+MATCH (p:Person {name: "Jeremia"}), (s:Skill {name: "AWS"}) CREATE (p)-[:HAS_SKILL {level: "Intermediate"}]->(s);
+
+// Elena ja Design
+MATCH (p:Person {name: "Elena"}), (s:Skill {name: "Figma"}) CREATE (p)-[:HAS_SKILL {level: "Expert"}]->(s);
+MATCH (p:Person {name: "Elena"}), (s:Skill {name: "JavaScript"}) CREATE (p)-[:HAS_SKILL {level: "Beginner"}]->(s);
+```
+
+### 7. Kurssien tavoitteet (Mitä ne opettavat)
+
+```cypher
+MATCH (c:Course {title: "Cloud Native Architecture"}), (s:Skill {name: "Kubernetes"}) CREATE (c)-[:TEACHES]->(s);
+MATCH (c:Course {title: "Cloud Native Architecture"}), (s:Skill {name: "AWS"}) CREATE (c)-[:TEACHES]->(s);
+MATCH (c:Course {title: "UI Design Fundamentals"}), (s:Skill {name: "Figma"}) CREATE (c)-[:TEACHES]->(s);
 MATCH (c:Course {title: "NoSQL Masterclass"}), (s:Skill {name: "Neo4j"}) CREATE (c)-[:TEACHES]->(s);
-MATCH (c:Course {title: "Docker Perusteet"}), (s:Skill {name: "Docker"}) CREATE (c)-[:TEACHES]->(s);
-MATCH (c:Course {title: "Frontend Bootcamp"}), (s:Skill {name: "React"}) CREATE (c)-[:TEACHES]->(s);
-MATCH (c:Course {title: "Frontend Bootcamp"}), (s:Skill {name: "JavaScript"}) CREATE (c)-[:TEACHES]->(s);
-```
-
-### 7. Katso lopputulos (Visualisointi)
-
-```cypher
-MATCH (n) RETURN n;
+MATCH (c:Course {title: "NoSQL Masterclass"}), (s:Skill {name: "MongoDB"}) CREATE (c)-[:TEACHES]->(s);
 ```
